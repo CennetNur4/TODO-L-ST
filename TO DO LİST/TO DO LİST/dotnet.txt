@@ -1,0 +1,8 @@
+cd "C:\Users\Cennet Nur\OneDrive\Masaüstü\TO DO LİST\BACKEND\MyToDo\MyToDo"
+
+dotnet run    = projeyi çalıştırmak apı yi de çalıştırmak bağlamak için
+dotnet build  = projeyi derlemek hataları görmek
+
+
+Eğer tüm işleri listelemek istiyorsanız:
+http://localhost:5031/api/tasks

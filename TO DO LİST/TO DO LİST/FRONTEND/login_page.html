@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Giriş Yap</h1>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="E-posta" required>
+            <input type="password" id="password" placeholder="Şifre" required>
+            <div class="error-message" id="errorMessage" style="display: none; color: red;"></div>
+            <button type="submit">Giriş Yap</button>
+        </form>
+        <div class="register-link">
+            <p>Hesabınız yok mu?</p>
+            <button id="registerButton">Kayıt Ol</button>
+        </div>
+    </div>
+
+    <script>
+        // Backend API URL'si
+        const baseURL = "http://localhost:5173/api"; // Backend'inizin çalıştığı URL
+
+        // Giriş formu gönderildiğinde çalışır
+        document.getElementById('loginForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Formun varsayılan davranışını engeller
+
+            // Kullanıcıdan alınan veriler
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // Backend'e giriş isteği gönder
+                const response = await fetch(`${baseURL}/users/login`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+
+                    // Backend'den dönen JWT token'ı yerel depolamaya kaydet
+                    localStorage.setItem("jwt", data.token); // JWT token'ı kaydet
+                    localStorage.setItem("userId", data.userId); // Kullanıcı ID'sini kaydet (isteğe bağlı)
+
+                    alert('Giriş başarılı!'); // Giriş başarılı mesajı
+
+                    // Ana sayfaya yönlendirme
+                    window.location.href = 'Index.html';
+                } else {
+                    const errorText = await response.text();
+                    // Hata mesajını göster
+                    document.getElementById('errorMessage').textContent = errorText || "Geçersiz e-posta veya şifre!";
+                    document.getElementById('errorMessage').style.display = 'block';
+                }
+            } catch (err) {
+                console.error("Giriş işlemi sırasında bir hata oluştu:", err);
+                // Sunucuya bağlanma hatası
+                document.getElementById('errorMessage').textContent = "Sunucuya bağlanırken bir hata oluştu.";
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        });
+
+        // Kayıt Ol butonuna tıklandığında çalışır
+        document.getElementById('registerButton').addEventListener('click', function () {
+            window.location.href = 'register.html'; // Kayıt olma sayfasına yönlendir
+        });
+    </script>
+</body>
+</html>

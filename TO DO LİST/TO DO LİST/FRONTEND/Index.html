@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List Projesi</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Seyahat To-Do List Projesi</h1>
+        
+        <div class="input-section">
+            <label for="city">Yer Seçiniz:</label>
+            <select id="city">
+                <option value="">Bir şehir seçiniz</option>
+                <!-- 81 ilin opsiyonları burada -->
+            </select>
+
+            <label for="date">Gidilecek Tarih:</label>
+            <input type="date" id="date">
+
+            <button id="add-btn">Ekle</button>
+        </div>
+
+        <div class="list-section">
+            <h2>Gezilecek Yerler</h2>
+            <ul id="places-list"></ul>
+        </div>
+
+        <div id="google-maps">
+            <h2>Harita</h2>
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

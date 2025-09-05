@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Kayıt Ol</h1>
+        <form id="registerForm">
+            <input type="text" id="username" placeholder="Kullanıcı Adı" required>
+            <input type="email" id="email" placeholder="E-posta" required>
+            <input type="date" id="birthdate" placeholder="Doğum Tarihi" required>
+            <input type="password" id="password" placeholder="Şifre" required>
+            <button type="submit">Kayıt Ol</button>
+
+            <!-- Success and Error Message Containers -->
+            <div class="success-message" id="successMessage" style="display: none;">Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz...</div>
+            <div class="error-message" id="errorMessage" style="display: none; color: red;">Bir hata oluştu. Lütfen tekrar deneyin.</div>
+        </form>
+    </div>
+
+    <script>
+        const baseURL = "http://localhost:5173/api"; // Backend API URL'si
+
+        document.getElementById('registerForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const birthdate = document.getElementById('birthdate').value;
+            const password = document.getElementById('password').value;
+
+            // Verilerin düzgün olup olmadığını kontrol et
+            if (!username || !email || !birthdate || !password) {
+                document.getElementById('errorMessage').textContent = "Tüm alanları doldurduğunuzdan emin olun.";
+                document.getElementById('errorMessage').style.display = "block";
+                return;
+            }
+
+            try {
+                const response = await fetch(`${baseURL}/Users/register`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        email: email,
+                        birthdate: birthdate,
+                        password: password
+                    })
+                });
+
+                // Response doğrulaması
+                if (response.ok) {
+                    // Başarılı kayıt mesajı göster
+                    document.getElementById('successMessage').style.display = "block";
+                    document.getElementById('errorMessage').style.display = "none";
+                    
+                    setTimeout(() => {
+                        window.location.href = 'login_page.html'; // Giriş sayfasına yönlendirme
+                    }, 2000);  // 2 saniye sonra yönlendir
+                } else {
+                    // API'den gelen hata mesajını göster
+                    const errorText = await response.text();
+                    document.getElementById('errorMessage').textContent = errorText || "Bir hata oluştu.";
+                    document.getElementById('errorMessage').style.display = "block";
+                    document.getElementById('successMessage').style.display = "none";
+                }
+            } catch (err) {
+                console.error("Kayıt işlemi sırasında bir hata oluştu:", err);
+                document.getElementById('errorMessage').textContent = "Sunucuya bağlanırken bir hata oluştu.";
+                document.getElementById('errorMessage').style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>

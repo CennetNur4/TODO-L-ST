@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yorum ve Fotoğraf Ekle</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Yorum ve Fotoğraf Ekle</h1>
+        <form id="commentForm">
+            <textarea placeholder="Yorumunuzu buraya yazınız (maksimum 500 karakter)" maxlength="500" required></textarea>
+            <input type="file" accept="image/*" required>
+            <button type="submit">Kaydet</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('commentForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            alert('Yorum ve fotoğraf başarıyla kaydedildi!');
+            window.close(); // Sayfayı kapat
+        });
+    </script>
+</body>
+</html>
